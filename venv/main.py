@@ -5,8 +5,7 @@ from routes.tickets import router
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
-
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,11 +14,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include routes
 app.include_router(router)
 
+@app.on_event("startup")
+def startup():
+    # safer place to create tables
+    Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def home():
-    return {
-        "message": "Customer Support CRM API Running"
-    }
+    return {"message": "Customer Support CRM API Running"}
