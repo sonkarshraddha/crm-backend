@@ -7,8 +7,10 @@ class TicketCreate(BaseModel):
     customer_email: str
     subject: str
     description: str
+    priority: Optional[str] = "Medium"
 
 
 class TicketUpdate(BaseModel):
     status: str
     notes: Optional[str] = None
+    priority: Optional[str] = None

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CRM Dashboard</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -11,12 +13,21 @@ body {
     background: linear-gradient(135deg, #e0f2ff, #f8fafc);
 }
 
-.card {
+.card:hover {
+    transform: translateY(-3px);
     transition: 0.2s ease;
 }
 
-.card:hover {
-    transform: translateY(-3px);
+.status-open {
+    background: #dcfce7;
+}
+
+.status-progress {
+    background: #fef9c3;
+}
+
+.status-closed {
+    background: #fee2e2;
 }
 </style>
 </head>
@@ -26,7 +37,7 @@ body {
 <!-- SIDEBAR -->
 <div class="w-64 bg-white shadow-lg p-5">
 
-    <h1 class="text-xl font-bold mb-6">
+    <h1 class="text-2xl font-bold mb-6">
         CRM Panel
     </h1>
 
@@ -43,46 +54,104 @@ body {
 <!-- MAIN -->
 <div class="flex-1 p-6">
 
-    <h2 class="text-2xl font-bold mb-4">
+    <h2 class="text-3xl font-bold mb-5">
         Support Tickets
     </h2>
 
 
-    <!-- CREATE -->
-    <div class="bg-white p-4 rounded-xl shadow mb-4 card">
+    <!-- DASHBOARD -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
 
-        <h3 class="font-semibold mb-2">
+        <div class="bg-white rounded-xl shadow p-4">
+            <h3 class="text-gray-500">
+                Total Tickets
+            </h3>
+            <p id="totalTickets"
+                class="text-3xl font-bold">
+                0
+            </p>
+        </div>
+
+        <div class="bg-green-100 rounded-xl shadow p-4">
+            <h3>Open</h3>
+            <p id="openTickets"
+                class="text-3xl font-bold">
+                0
+            </p>
+        </div>
+
+        <div class="bg-yellow-100 rounded-xl shadow p-4">
+            <h3>In Progress</h3>
+            <p id="progressTickets"
+                class="text-3xl font-bold">
+                0
+            </p>
+        </div>
+
+        <div class="bg-red-100 rounded-xl shadow p-4">
+            <h3>Closed</h3>
+            <p id="closedTickets"
+                class="text-3xl font-bold">
+                0
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- CREATE -->
+    <div class="bg-white p-5 rounded-xl shadow mb-5 card">
+
+        <h3 class="font-semibold mb-3 text-lg">
             Create Ticket
         </h3>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-3">
 
             <input
                 id="name"
-                placeholder="Name"
+                placeholder="Customer Name"
                 class="border p-2 rounded">
 
             <input
                 id="email"
-                placeholder="Email"
+                placeholder="Customer Email"
                 class="border p-2 rounded">
 
             <input
                 id="subject"
                 placeholder="Subject"
-                class="border p-2 rounded col-span-2">
+                class="border p-2 rounded">
 
-            <input
+            <select
+                id="priority"
+                class="border p-2 rounded">
+
+                <option value="Low">
+                    Low Priority
+                </option>
+
+                <option value="Medium" selected>
+                    Medium Priority
+                </option>
+
+                <option value="High">
+                    High Priority
+                </option>
+
+            </select>
+
+            <textarea
                 id="desc"
                 placeholder="Description"
                 class="border p-2 rounded col-span-2">
+            </textarea>
 
         </div>
 
-
         <button
             onclick="createTicket()"
-            class="mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+            class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
 
             Create Ticket
 
@@ -91,15 +160,14 @@ body {
     </div>
 
 
-    <!-- SEARCH + FILTER -->
-    <div class="flex gap-3 mb-4">
+    <!-- SEARCH -->
+    <div class="flex gap-3 mb-5">
 
         <input
             id="searchBox"
             onkeyup="loadTickets()"
-            placeholder="Search by name, subject or ID..."
+            placeholder="Search ticket..."
             class="border p-2 rounded w-1/2">
-
 
         <select
             id="statusFilter"
@@ -107,19 +175,19 @@ body {
             class="border p-2 rounded">
 
             <option value="">
-                All
+                All Status
             </option>
 
             <option value="Open">
                 Open
             </option>
 
-            <option value="Closed">
-                Closed
-            </option>
-
             <option value="In Progress">
                 In Progress
+            </option>
+
+            <option value="Closed">
+                Closed
             </option>
 
         </select>
@@ -130,7 +198,7 @@ body {
     <!-- TICKETS -->
     <div
         id="tickets"
-        class="grid grid-cols-2 gap-3">
+        class="grid grid-cols-2 gap-4">
     </div>
 
 </div>
